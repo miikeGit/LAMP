@@ -1,10 +1,11 @@
-# MediaPlayer
+# LAMP
 
 A modern, hardware-accelerated C++ WinUI 3 media player featuring integrated magnet/torrent streaming, direct ZIP archive playback, real-time shader effects, and advanced audio processing.
 
 Built on top of **Windows App SDK (WinUI 3)** and **C++20**, this application bypasses standard media engine limitations by employing a custom **FFmpeg** and **Direct3D 11** decoding and rendering pipeline.
 
 ---
+<img width="1302" height="737" alt="image" src="https://github.com/user-attachments/assets/007583d6-5b06-4cde-a988-2aefe85343cf" />
 
 ## 🚀 Key Features
 
