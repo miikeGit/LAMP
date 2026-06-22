@@ -1,0 +1,40 @@
+name: Build and Package
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    name: Build & Package (Release x64)
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet Packages
+      run: nuget restore packages.config -PackagesDirectory packages
+
+    - name: Setup vcpkg Integration
+      run: |
+        vcpkg integrate install
+
+    - name: Cache vcpkg dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          vcpkg_installed
+          C:\Users\runneradmin\AppData\Local\vcpkg\archives
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-
+
+    - name: Build and Package Project
+      run: |
+        msbuild MediaPlayer.vcxproj /t:Build /p:Configuration=Release /p:Platform=x64 /p:GenerateAppxPackageOnBuild=true
