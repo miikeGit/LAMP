@@ -345,4 +345,14 @@
     <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
   </Target>
+  <Target Name="AddVcpkgDllsToAppxPayload" BeforeTargets="_ComputeAppxPackagePayload" Condition="'$(AppxPackage)' == 'true'">
+    <ReadLinesFromFile File="$(IntDir)vcpkg.applocal.log" Condition="Exists('$(IntDir)vcpkg.applocal.log')">
+      <Output TaskParameter="Lines" ItemName="VcpkgCopiedDLLs" />
+    </ReadLinesFromFile>
+    <ItemGroup Condition="'@(VcpkgCopiedDLLs)' != ''">
+      <AppxPackagePayload Include="@(VcpkgCopiedDLLs)">
+        <TargetPath>%(Filename)%(Extension)</TargetPath>
+      </AppxPackagePayload>
+    </ItemGroup>
+  </Target>
 </Project>
